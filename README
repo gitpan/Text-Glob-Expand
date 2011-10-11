@@ -1,0 +1,112 @@
+NAME
+    Text::Glob::Expand - permute and expand glob-like text patterns
+
+VERSION
+    This document describes Text::Glob::Expand version 0.1
+
+SYNOPSIS
+    The original use case was to specify hostname aliases and expansions
+    thereof. For example:
+
+        use Text::Glob::Expand;
+
+        my $hosts = "{www{1,2,3},mail{1,2},ftp{1,2}}";
+        my $glob = Text::Glob::Expand->parse($hosts);
+
+        my $permutations = $glob->explode("%1.somewhere.co.uk");
+        # $permutations = [qw(www1 www2 www3 mail1 mail2 ftp1 ftp2)]
+
+        my $permutations = $glob->explode_format("%0.somewhere.co.uk");
+        # $permutations = {
+        #     www1 => 'www1.somewhere.co.uk',
+        #     www2 => 'www2.somewhere.co.uk',
+        #     www3 => 'www3.somewhere.co.uk',
+        #     mail1 => 'mail1.somewhere.co.uk',
+        #     mail2 => 'mail2.somewhere.co.uk',
+        #     ftp1 => 'ftp1.somewhere.co.uk',
+        #     ftp2 => 'ftp2.somewhere.co.uk',
+        # }
+
+INTERFACE
+  "$obj = $class->parse($string)"
+    This is the constructor. It parses a string, and returns a
+    "Text::Glob::Expand" object.
+
+  "$arrayref = $obj->explode"
+    This returns an arrayref containing all the expanded permutations
+    generated from the string parsed by the constructor.
+
+    (The result is cached, and returned again if this is called more than
+    once. See $MAX_CACHING.)
+
+  "$hashref = $obj->explode_format($format)"
+    This returns a hashref mapping each expanded permutation to a string
+    generated from the $format parameter.
+
+    (The return value is not cached, since the result depend on $format.)
+
+DIAGNOSTICS
+    TBD
+
+CONFIGURATION AND ENVIRONMENT
+    "Text::Glob::Expand" requires no configuration files or environment
+    variables.
+
+    There is one configurable option in the form of a package variable.
+
+  $MAX_CACHING
+    The package variable $Text::Glob::Expand::MAX_CACHING can be used to
+    control or disable the caching done by the "->explode" method. It should
+    be a positive integer, or zero.
+
+    The default value is 100, which means that up to 100
+    "Text::Glob::Expand" objects' "->explode" results will be cached, but no
+    more. You can disable caching by setting this to zero or less.
+
+DEPENDENCIES
+    The dependencies should be minimal - I aim to have none.
+
+    For a definitive answer, see the Build.PL file included in the
+    distribution, or use the dependencies tool on <http://search.cpan.org>
+
+INCOMPATIBILITIES
+    None reported.
+
+BUGS AND LIMITATIONS
+    No bugs have been reported.
+
+    Please report any bugs or feature requests to
+    "bug-Text-Glob-Expand@rt.cpan.org", or through the web interface at
+    <http://rt.cpan.org>.
+
+AUTHOR
+    Nick Stokoe "<npw@cpan.org>"
+
+LICENCE AND COPYRIGHT
+    Copyright (c) 2011, Nick Stokoe "<npw@cpan.org>". All rights reserved.
+
+    This module is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself. See perlartistic.
+
+DISCLAIMER OF WARRANTY
+    BECAUSE THIS SOFTWARE IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
+    FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN
+    OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+    PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
+    EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+    ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH
+    YOU. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL
+    NECESSARY SERVICING, REPAIR, OR CORRECTION.
+
+    IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+    WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
+    REDISTRIBUTE THE SOFTWARE AS PERMITTED BY THE ABOVE LICENCE, BE LIABLE
+    TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL, OR
+    CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE
+    SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
+    RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
+    FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
+    SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
+    DAMAGES.
+
