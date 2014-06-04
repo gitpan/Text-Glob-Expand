@@ -5,8 +5,15 @@ use warnings;
 use strict;
 use Carp;
 use Scalar::Util qw(refaddr);
+use Sub::Exporter -setup => {
+    exports => {
+        explode => sub { \&_explode_list },
+        explode_format => sub { \&_explode_format_list },
+    },
+};
 
-use version; our $VERSION = qv('1.1');
+
+our $VERSION = '0.1.1'; # VERSION
 
 # Cache ->_explode results here
 our %CACHE;
@@ -456,7 +463,7 @@ sub explode {
 }
 
 
-# A convenience which explodes and expands in one step.
+# A convenience method which explodes and expands in one step.
 sub explode_format {
     my $self = shift;
     my $format = shift;
@@ -467,6 +474,43 @@ sub explode_format {
 }
 
 
+
+######################################################################
+# Exportable functions
+
+# FIXME document
+# FIXME test these
+
+# A convenience function which explodes to a list of strings
+sub _explode_list {
+
+    return map {
+        my $glob = __PACKAGE__->parse($_);
+        map {
+            $_->text;
+        } @{ $glob->explode };
+    } @_;
+}
+
+
+# A convenience function which explodes to a list of formatted strings
+sub _explode_format_list {
+    @_ or croak "you must supply a format parameter";
+
+    defined (my $format = shift)
+        or croak "format parameter is undefined";
+
+    return map {
+        my $glob = __PACKAGE__->parse($_);
+        map {
+            $_->expand($format);
+        } @{ $glob->explode };
+    } @_;
+}
+
+
+no Scalar::Util;
+no Carp;
 1; # Magic true value required at end of module
 __END__
 
@@ -474,11 +518,9 @@ __END__
 
 Text::Glob::Expand - permute and expand glob-like text patterns
 
-
 =head1 VERSION
 
-This document describes Text::Glob::Expand version 0.1
-
+version 0.1.1
 
 =head1 SYNOPSIS
 
@@ -546,10 +588,10 @@ generated from the C<$format> parameter.
 
 Using a notation based on a subset of the Backus Naur Form described
 by the
-L<http://www.w3.org/Protocols/rfc2616/rfc2616-sec2.html#sec2.1|HTTP
-1.1 RFC> (with the notable exception that white-space is significant
-here) the expression syntax expected by the C<< ->parse >> method can
-be defined like this:
+L<HTTP 1.1 RFC|http://www.w3.org/Protocols/rfc2616/rfc2616-sec2.html#sec2.1>
+(with the notable exception that white-space is significant here) the
+expression syntax expected by the C<< ->parse >> method can be defined
+like this:
 
     expression =
        segment *( brace-expression segment )

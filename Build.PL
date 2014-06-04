@@ -1,58 +1,51 @@
+
 use strict;
 use warnings;
-use Module::Build;
 
-{ # define a handy rscan_dir function
-    my $manifest_skip = qr/(?!)/; # this regex always fails 
-    if (open my $fh, '<', 'MANIFEST.SKIP')
-    {
-        # map /.*/ chomps newlines, since . doesn't match EOLs
-        $manifest_skip = join '|', map /(.*)/, <$fh>;
-        close $fh;
-        $manifest_skip = qr/$manifest_skip/;
-    }
+use Module::Build 0.2808;
 
-    sub rscan_dir
-    {
-        grep !/$manifest_skip/, @{ Module::Build->rscan_dir(@_) };
-    }
+
+my %module_build_args = (
+  "build_requires" => {
+    "Module::Build" => "0.2808"
+  },
+  "configure_requires" => {
+    "Module::Build" => "0.2808"
+  },
+  "dist_abstract" => "permute and expand glob-like text patterns",
+  "dist_author" => [
+    "Nick Stokoe <wulee\@cpan.org>"
+  ],
+  "dist_name" => "Text-Glob-Expand",
+  "dist_version" => "0.1.1",
+  "license" => "perl",
+  "module_name" => "Text::Glob::Expand",
+  "recommends" => {
+    "Test::Perl::Critic" => "0.001000",
+    "Test::Pod" => "1.14",
+    "Test::Pod::Coverage" => "1.04"
+  },
+  "recursive_test_files" => 1,
+  "requires" => {
+    "Sub::Exporter" => 0,
+    "Test::More" => 0,
+    "version" => "0.77"
+  },
+  "script_files" => [],
+  "test_requires" => {}
+);
+
+
+my %fallback_build_requires = (
+  "Module::Build" => "0.2808"
+);
+
+
+unless ( eval { Module::Build->VERSION(0.4004) } ) {
+  delete $module_build_args{test_requires};
+  $module_build_args{build_requires} = \%fallback_build_requires;
 }
 
-my $builder = Module::Build->new
-    (module_name         => 'Text::Glob::Expand',
-     license             => 'artistic',
-     dist_author         => 'Nick Stokoe <wulee@cpan.org>',
-     dist_version_from   => 'lib/Text/Glob/Expand.pm',
-     dist_abstract       => 'permute and expand glob-like text patterns',
-     create_readme       => 1,
-     create_makefile_pl  => 'traditional',
-     meta_merge          =>
-     {
-         resources =>
-         {
-             repository =>
-                'https://github.com/wu-lee/Text-Glob-Expand',
-        },
-        keywords  => [qw(text glob pattern expand braces hostnames)],
-     },
-     configure_requires => 
-     {
-         'Module::Build' => 0.28,
-     },
-     build_requires => 
-     {
-         'Module::Build' => 0.28,
-     },
-     requires => 
-     {
-      'Test::More' => 0,
-      'version'    => 0.77,
-     },
-     recommends => 
-     {
-     },
-     test_files         => [ rscan_dir('t', '\.t$'), rscan_dir('xt', '\.t$') ],
-     add_to_cleanup      => [ 'Text-Glob-Expand-*' ],
-    );
+my $build = Module::Build->new(%module_build_args);
 
-$builder->create_build_script();
+$build->create_build_script;

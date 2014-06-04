@@ -2,6 +2,8 @@ package Text::Glob::Expand::Segment;
 use strict;
 use warnings;
 
+our $VERSION = '0.1.1'; # VERSION
+
 sub depth { shift->[1] }
 sub text { shift->[0] }
 
@@ -11,6 +13,10 @@ __END__
 =head1 NAME
 
 Text::Glob::Expand::Segment - describes a portion of text parsed from a glob pattern
+
+=head1 VERSION
+
+version 0.1.1
 
 =head1 SYNOPSIS
 
@@ -64,4 +70,3 @@ RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
 FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
 SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGES.
-
