@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Carp qw(croak);
 
-our $VERSION = '0.1.1'; # VERSION
+our $VERSION = '1.1.1'; # VERSION
 
 ######################################################################
 # Private methods
@@ -82,7 +82,7 @@ Text::Glob::Expand::Permutation - describes one possible expansion of a glob pat
 
 =head1 VERSION
 
-version 0.1.1
+version 1.1.1
 
 =head1 SYNOPSIS
 

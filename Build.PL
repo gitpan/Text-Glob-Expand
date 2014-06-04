@@ -17,7 +17,7 @@ my %module_build_args = (
     "Nick Stokoe <wulee\@cpan.org>"
   ],
   "dist_name" => "Text-Glob-Expand",
-  "dist_version" => "0.1.1",
+  "dist_version" => "1.1.1",
   "license" => "perl",
   "module_name" => "Text::Glob::Expand",
   "recommends" => {

@@ -2,7 +2,7 @@ package Text::Glob::Expand::Segment;
 use strict;
 use warnings;
 
-our $VERSION = '0.1.1'; # VERSION
+our $VERSION = '1.1.1'; # VERSION
 
 sub depth { shift->[1] }
 sub text { shift->[0] }
@@ -16,7 +16,7 @@ Text::Glob::Expand::Segment - describes a portion of text parsed from a glob pat
 
 =head1 VERSION
 
-version 0.1.1
+version 1.1.1
 
 =head1 SYNOPSIS
 

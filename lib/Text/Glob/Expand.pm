@@ -13,7 +13,7 @@ use Sub::Exporter -setup => {
 };
 
 
-our $VERSION = '0.1.1'; # VERSION
+our $VERSION = '1.1.1'; # VERSION
 
 # Cache ->_explode results here
 our %CACHE;
@@ -520,7 +520,7 @@ Text::Glob::Expand - permute and expand glob-like text patterns
 
 =head1 VERSION
 
-version 0.1.1
+version 1.1.1
 
 =head1 SYNOPSIS
 
